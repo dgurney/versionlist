@@ -108,7 +108,7 @@ func main() {
 			default:
 				fmt.Println(version)
 			case *win:
-				r, _ := regexp.Compile(`^(5|6|10).[0-5]{1}.[^0][0-9]{3,4}.[\d]{1,5}[[:space:]]\([a-zA-Z\S]+.[\d]{6}-`)
+				r, _ := regexp.Compile(`^(5|6|10).[0-5]{1}.[^0][\d]{3,4}.[\d]{1,5}[[:space:]]\([[:alpha:]\S]+.[\d]{6}-`)
 				if r.MatchString(version) {
 					fmt.Println(version)
 				}

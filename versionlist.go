@@ -93,10 +93,7 @@ func main() {
 		encountered := map[string]bool{}
 		versions := make([]string, 0)
 		for v := range rawVersions {
-			switch {
-			case encountered[rawVersions[v]]:
-				// No dupes please
-			default:
+			if !encountered[rawVersions[v]] {
 				encountered[rawVersions[v]] = true
 				versions = append(versions, rawVersions[v])
 			}

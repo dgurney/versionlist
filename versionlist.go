@@ -34,7 +34,7 @@ import (
 	"github.com/gonutz/w32"
 )
 
-const version = "0.0.1"
+const version = "0.0.2"
 
 func getVersions(dir string) map[string]string {
 	files, err := ioutil.ReadDir(dir)
@@ -74,14 +74,22 @@ func getVersions(dir string) map[string]string {
 func main() {
 	dir := flag.String("d", ".", "Directory to read.")
 	name := flag.Bool("n", false, "Show names in output.")
-	win := flag.Bool("w", false, "Only show Windows build tags that could theoretically be full Windows builds.")
+	win := flag.Bool("w", false, "Show Windows build tags that could theoretically be full Windows builds.")
+	winsd := flag.Bool("wsd", false, "Show build tags that use older source depot format.")
 	v := flag.Bool("v", false, "Show version and exit.")
 	flag.Parse()
 	if *v {
 		fmt.Printf("versionlist v%s by Daniel Gurney.\n", version)
 		return
 	}
+
 	vers := getVersions(*dir)
+
+	if *win && *winsd {
+		fmt.Println("You can only specify one filter at a time.")
+		flag.PrintDefaults()
+		return
+	}
 
 	switch {
 	default:
@@ -106,6 +114,11 @@ func main() {
 				fmt.Println(version)
 			case *win:
 				r, _ := regexp.Compile(`^(5|6|10).[0-5]{1}.[^0][\d]{3,4}.[\d]{1,5}[[:space:]]\([[:alpha:]\S]+.[\d]{6}-`)
+				if r.MatchString(version) {
+					fmt.Println(version)
+				}
+			case *winsd:
+				r, _ := regexp.Compile(`^5.[0-1]{1,2}.[0-9]{4}.[0-9]{1,4} built by: (\w+) ?(at: (\d+)-(\d+))?`)
 				if r.MatchString(version) {
 					fmt.Println(version)
 				}

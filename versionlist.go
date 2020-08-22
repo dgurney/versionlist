@@ -78,6 +78,7 @@ func main() {
 	winsd := flag.Bool("wsd", false, "Show build tags that use older source depot format.")
 	v := flag.Bool("v", false, "Show version and exit.")
 	flag.Parse()
+
 	if *v {
 		fmt.Printf("versionlist v%s by Daniel Gurney.\n", version)
 		return
